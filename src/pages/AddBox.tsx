@@ -1,7 +1,8 @@
-import { memo } from "react";
+import { lazy } from "react";
+const BoxForm = lazy(() => import("../components/BoxForm"));
 
-const AddBox = memo(() => {
-  return <div></div>;
-});
+const AddBox = () => {
+  return <BoxForm />;
+};
 
 export default AddBox;

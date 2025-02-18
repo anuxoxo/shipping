@@ -1,20 +1,23 @@
-import { BrowserRouter as Router, Routes } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./styles/index.scss";
 
 import { BoxProvider } from "./context/BoxContext";
-import Navbar from "./components/Navbar";
-// import AddBox from "./pages/AddBox";
-// import BoxList from "./pages/BoxList";
+const Navbar = lazy(() => import("./components/Navbar"));
+const AddBox = lazy(() => import("./pages/AddBox"));
+const BoxList = lazy(() => import("./pages/BoxList"));
 
 function App() {
   return (
     <BoxProvider>
       <Router>
-        <Navbar />
-        <Routes>
-          {/* <Route path="/" element={<AddBox />} />
-          <Route path="/list" element={<BoxList />} /> */}
-        </Routes>
+        <Suspense fallback={"Loading..."}>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<AddBox />} />
+            <Route path="/list" element={<BoxList />} />
+          </Routes>
+        </Suspense>
       </Router>
     </BoxProvider>
   );

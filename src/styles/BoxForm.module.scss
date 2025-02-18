@@ -1,0 +1,123 @@
+@use "./colors" as *;
+
+.formContainer {
+  background-color: #f7f8fa;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 500px;
+  margin: 4rem auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: $secondary-color;
+}
+
+.boxForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.input,
+.select,
+.inputColor {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.inputColor {
+  padding: 0;
+  height: 35px;
+  width: 35px;
+  border: none;
+}
+
+.select {
+  font-size: 1rem;
+  padding: 10px;
+}
+
+.submitBtn {
+  background-color: $primary-color;
+  color: white;
+  font-size: 1.1rem;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submitBtn:hover {
+  background-color: $secondary-color;
+}
+
+.error {
+  color: red;
+  font-size: 1rem;
+}
+
+@media (max-width: 600px) {
+  .formContainer {
+    padding: 15px;
+    max-width: 100%;
+  }
+}
+
+.buttonGroup {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+
+.checkPriceBtn {
+  background-color: transparent;
+  color: $tertiary-color;
+  font-size: 1.1rem;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.checkPriceBtn:hover {
+  color: #d88c1f;
+}
+
+.priceDisplay {
+  background-color: $background-color;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+
+  & .calculatedPrice {
+    font-weight: normal;
+    color: $off-color;
+
+    & span {
+      color: $primary-color;
+      font-size: 1.2rem;
+      margin: 15px 0;
+    }
+  }
+}
