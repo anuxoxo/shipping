@@ -3,25 +3,55 @@
 .Navbar {
   width: 100%;
   display: flex;
-  gap: 1rem;
   padding: 1rem 3rem;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  background-color: $background-color;
+  gap: 3rem;
+  border-bottom: 1px solid #ddd;
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+
+  &__links {
+    display: flex;
+    gap: 1rem;
+  }
 
   &__item {
     text-decoration: none;
     font-size: 1.2rem;
     color: $off-color;
     cursor: pointer;
-    padding: 0.5rem 1rem;
+    padding: 0.1rem 0.5rem;
 
     &:hover,
     &_active {
       border: none;
       border-radius: 8px;
       color: $primary-color;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .Navbar {
+    padding: 1rem;
+    justify-content: flex-start;
+    gap: 1rem;
+
+    &__icon {
+      & p {
+        display: none;
+      }
+    }
+
+    &__links {
+      gap: 0;
     }
   }
 }

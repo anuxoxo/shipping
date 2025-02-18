@@ -1,0 +1,10 @@
+@use "./colors" as *;
+
+.AddBox {
+  width: 100%;
+  min-height: 100vh;
+  // background: url("https://images.pexels.com/photos/3063470/pexels-photo-3063470.jpeg?auto=compress&cs=tinysrgb&w=1200");
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 2rem;
+}
