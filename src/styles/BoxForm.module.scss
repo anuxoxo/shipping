@@ -1,10 +1,12 @@
 @use "./colors" as *;
 
 .formContainer {
+  width: 100%;
+  max-width: 500px;
+  height: max-content;
   background-color: #f7f8fa;
   border-radius: 8px;
   padding: 20px;
-  max-width: 500px;
   margin: 0 auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -14,6 +16,7 @@
   text-align: center;
   margin-bottom: 20px;
   color: $secondary-color;
+  font-weight: normal;
 }
 
 .boxForm {
@@ -58,6 +61,8 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
 }
 
 .submitBtn:hover {
@@ -72,34 +77,7 @@
 @media (max-width: 600px) {
   .formContainer {
     padding: 15px;
-    max-width: 90%;
-    margin: 2rem auto;
   }
-}
-
-.buttonGroup {
-  width: 100%;
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem;
-}
-
-.checkPriceBtn {
-  background-color: transparent;
-  color: $tertiary-color;
-  font-size: 1.1rem;
-  padding: 8px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.checkPriceBtn:hover {
-  color: #d88c1f;
 }
 
 .priceDisplay {
