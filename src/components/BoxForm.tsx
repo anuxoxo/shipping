@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/BoxForm.module.scss";
 import { destinations, hexToRgb } from "../utils";
 import { useNavigate } from "react-router-dom";
+import { useBoxContext } from "../context/BoxContext";
 
 const BoxForm: React.FC = () => {
+  const { boxes, addBox } = useBoxContext();
   const [receiverName, setReceiverName] = useState("");
-  const [weight, setWeight] = useState<number | null>(null);
+  const [weight, setWeight] = useState<number>(0);
   const [boxColor, setBoxColor] = useState<string>("");
   const [destination, setDestination] = useState<string>("");
   const [errors, setErrors] = useState({
@@ -20,7 +22,6 @@ const BoxForm: React.FC = () => {
 
   const validateField = (field: string) => {
     let error = "";
-
     switch (field) {
       case "receiverName":
         if (!receiverName) {
@@ -28,7 +29,7 @@ const BoxForm: React.FC = () => {
         }
         break;
       case "weight":
-        if (weight === null || weight <= 0) {
+        if (weight <= 0) {
           error = "Weight must be greater than zero.";
         }
         break;
@@ -45,17 +46,26 @@ const BoxForm: React.FC = () => {
       default:
         break;
     }
-
     setErrors((prev) => ({ ...prev, [field]: error }));
     return error === "";
   };
 
+  // Automatically calculate shipping cost when all fields are filled
+  useEffect(() => {
+    if (receiverName && weight > 0 && boxColor && destination) {
+      const multiplier =
+        destinations.find((d) => d.name === destination)?.costMultiplier || 1;
+      const shippingCost = weight * multiplier;
+      setCalculatedPrice(Number(shippingCost.toFixed(2)));
+    } else {
+      setCalculatedPrice(null);
+    }
+  }, [receiverName, weight, boxColor, destination]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    let isValid = true;
-
-    isValid =
+    const isValid =
       validateField("receiverName") &&
       validateField("weight") &&
       validateField("boxColor") &&
@@ -63,42 +73,33 @@ const BoxForm: React.FC = () => {
 
     if (!isValid) return;
 
-    const shippingCost =
-      weight !== null
-        ? weight *
-          (destinations.find((d) => d.name === destination)?.costMultiplier ||
-            1)
-        : 0;
-    alert(` Box saved successfully! Shipping Cost is : ${shippingCost}.`);
+    const multiplier =
+      destinations.find((d) => d.name === destination)?.costMultiplier || 1;
+    const shippingCost = weight * multiplier;
+
+    addBox({
+      id: boxes.length + 1,
+      receiverName,
+      weight,
+      boxColor: hexToRgb(boxColor),
+      destination,
+      shippingCost,
+    });
+
+    alert(
+      `Box saved successfully! Shipping Cost is: INR ${Number(
+        shippingCost.toFixed(2)
+      )}.`
+    );
+
     setTimeout(() => {
       navigate("/table");
     }, 1000);
   };
 
-  const handleCheckPrice = () => {
-    let isValid = true;
-
-    isValid =
-      validateField("receiverName") &&
-      validateField("weight") &&
-      validateField("boxColor") &&
-      validateField("destination");
-
-    if (!isValid) return;
-
-    const shippingCost =
-      weight !== null
-        ? weight *
-          (destinations.find((d) => d.name === destination)?.costMultiplier ||
-            1)
-        : 0;
-    setCalculatedPrice(Number(shippingCost.toFixed(2)));
-  };
-
   return (
     <div className={styles.formContainer}>
       <h2 className={styles.title}>Add Shipping Box</h2>
-
       <form onSubmit={handleSubmit} className={styles.boxForm}>
         <div className={styles.inputGroup}>
           <label htmlFor="receiverName">Receiver's Name</label>
@@ -121,7 +122,7 @@ const BoxForm: React.FC = () => {
           <input
             type="number"
             id="weight"
-            value={weight || ""}
+            value={weight}
             onChange={(e) => setWeight(Number(e.target.value))}
             onBlur={() => validateField("weight")}
             className={styles.input}
@@ -137,7 +138,7 @@ const BoxForm: React.FC = () => {
             type="color"
             id="boxColor"
             value={boxColor}
-            onChange={(e) => setBoxColor(hexToRgb(e.target.value))}
+            onChange={(e) => setBoxColor(e.target.value)}
             onBlur={() => validateField("boxColor")}
             className={styles.inputColor}
           />
@@ -174,13 +175,6 @@ const BoxForm: React.FC = () => {
         )}
 
         <div className={styles.buttonGroup}>
-          <button
-            type="button"
-            className={styles.checkPriceBtn}
-            onClick={handleCheckPrice}
-          >
-            Check Price
-          </button>
           <button type="submit" className={styles.submitBtn}>
             Save Box
           </button>

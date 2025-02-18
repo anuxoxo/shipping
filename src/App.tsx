@@ -15,7 +15,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<AddBox />} />
-            <Route path="/list" element={<BoxList />} />
+            <Route path="/table" element={<BoxList />} />
           </Routes>
         </Suspense>
       </Router>

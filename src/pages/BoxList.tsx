@@ -1,7 +1,8 @@
-import { memo } from "react";
+import { lazy, memo } from "react";
+const BoxTable = lazy(() => import("../components/BoxTable"));
 
 const BoxList = memo(() => {
-  return <div></div>;
+  return <BoxTable />;
 });
 
 export default BoxList;
