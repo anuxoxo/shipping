@@ -1,0 +1,27 @@
+@use "./colors" as *;
+
+.Navbar {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 3rem;
+  align-items: center;
+  justify-content: end;
+  flex-wrap: wrap;
+  background-color: $background-color;
+
+  &__item {
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: $off-color;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+
+    &:hover,
+    &_active {
+      border: none;
+      border-radius: 8px;
+      color: $primary-color;
+    }
+  }
+}
