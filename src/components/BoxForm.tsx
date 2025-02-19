@@ -7,8 +7,8 @@ import { useBoxContext } from "../context/BoxContext";
 const BoxForm: React.FC = () => {
   const { boxes, addBox } = useBoxContext();
   const [receiverName, setReceiverName] = useState("");
-  const [weight, setWeight] = useState<number>(0);
-  const [boxColor, setBoxColor] = useState<string>("");
+  const [weight, setWeight] = useState<string>("");
+  const [boxColor, setBoxColor] = useState<string>("#ffffff");
   const [destination, setDestination] = useState<string>("");
   const [errors, setErrors] = useState({
     receiverName: "",
@@ -20,6 +20,15 @@ const BoxForm: React.FC = () => {
 
   const navigate = useNavigate();
 
+  const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    // Allow only numbers and an empty string (for clearing input)
+    if (value === "" || /^\d*\.?\d*$/.test(value)) {
+      setWeight(value);
+    }
+  };
+
   const validateField = (field: string) => {
     let error = "";
     switch (field) {
@@ -29,7 +38,7 @@ const BoxForm: React.FC = () => {
         }
         break;
       case "weight":
-        if (weight <= 0) {
+        if (!weight || parseFloat(weight) <= 0) {
           error = "Weight must be greater than zero.";
         }
         break;
@@ -52,10 +61,16 @@ const BoxForm: React.FC = () => {
 
   // Automatically calculate shipping cost when all fields are filled
   useEffect(() => {
-    if (receiverName && weight > 0 && boxColor && destination) {
+    if (
+      receiverName &&
+      weight &&
+      parseFloat(weight) > 0 &&
+      boxColor &&
+      destination
+    ) {
       const multiplier =
         destinations.find((d) => d.name === destination)?.costMultiplier || 1;
-      const shippingCost = weight * multiplier;
+      const shippingCost = parseFloat(weight) * multiplier;
       setCalculatedPrice(Number(shippingCost.toFixed(2)));
     } else {
       setCalculatedPrice(null);
@@ -75,12 +90,12 @@ const BoxForm: React.FC = () => {
 
     const multiplier =
       destinations.find((d) => d.name === destination)?.costMultiplier || 1;
-    const shippingCost = weight * multiplier;
+    const shippingCost = parseFloat(weight) * multiplier;
 
     addBox({
       id: boxes.length + 1,
       receiverName,
-      weight,
+      weight: parseFloat(weight),
       boxColor: hexToRgb(boxColor),
       destination,
       shippingCost,
@@ -123,7 +138,7 @@ const BoxForm: React.FC = () => {
             type="number"
             id="weight"
             value={weight}
-            onChange={(e) => setWeight(Number(e.target.value))}
+            onChange={handleWeightChange}
             onBlur={() => validateField("weight")}
             className={styles.input}
             placeholder="Enter box weight"
